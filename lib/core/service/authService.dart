@@ -14,8 +14,14 @@ class AuthService {
 
       if(response.statusCode == 200){
         var stringObject=response.body;
-        var user=userFromJson(stringObject);
-        return user;
+        if(stringObject.length<40){
+          return stringObject;
+        }
+        else{
+          var user=userFromJson(stringObject); 
+          return user;
+        }
+       
       }
      // else{
       //  return null;
