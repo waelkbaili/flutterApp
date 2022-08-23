@@ -25,7 +25,7 @@ class FormText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: isNumber ? TextInputType.number:TextInputType.text,
+      keyboardType: isNumber ? TextInputType.datetime:TextInputType.text,
       obscureText:isObscure==null || isObscure==false ?false:true,
       decoration: InputDecoration(
                     hintText: hintText,

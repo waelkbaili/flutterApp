@@ -8,11 +8,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:  Container(alignment: Alignment.center, child: const Text("Home")),
-      ),
+      
       body: Container(
-
+        
       ),
     );
   }

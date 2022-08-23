@@ -1,4 +1,5 @@
 import 'package:firstapp/controller/auth/loginController.dart';
+import 'package:firstapp/core/class/handlingDataView.dart';
 import 'package:firstapp/core/function/validInput.dart';
 import 'package:firstapp/view/widget/language/button.dart';
 import 'package:firstapp/view/widget/login/text.dart';
@@ -13,8 +14,9 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
      LoginControllerImp controllerImp= Get.put(LoginControllerImp());
     return Scaffold(
-      //appBar: AppBar(title: Container(alignment: Alignment.center, child: Text("Login page"),)),
-      body:Form(
+      body:GetBuilder<LoginControllerImp>(builder: (controller) => 
+      HandlingDataView(statusRequest: controller.statusRequest,
+       widget: Form(
         key: controllerImp.formstate,
         child: Container(margin: EdgeInsets.all(20),
           child: 
@@ -33,13 +35,10 @@ class Login extends StatelessWidget {
               TextButton(onPressed: (){
                 controllerImp.signUp();
               }, child: Text("Sign Up")),
-              Obx(()=>controllerImp.isLoading==true? Center(child: CircularProgressIndicator()):Text(""))
-              
-      
             ],),
-
-          
         ),
+      )
+      ),
       )
       
     );

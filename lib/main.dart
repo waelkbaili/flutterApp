@@ -1,3 +1,4 @@
+import 'package:firstapp/bindings/initialBindings.dart';
 import 'package:firstapp/core/constant/color.dart';
 import 'package:firstapp/core/localization/changelocal.dart';
 import 'package:firstapp/core/localization/translation.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       getPages: routes,
       translations: Translate(),
       locale: controller.language,
+      initialBinding: initialBindings(),
     );
   }
 }

@@ -1,4 +1,7 @@
+import 'package:firstapp/core/class/statusRequest.dart';
 import 'package:firstapp/core/constant/routes.dart';
+import 'package:firstapp/core/function/checkInternet.dart';
+import 'package:firstapp/data/datasource/remote/auth/signupdata.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,22 +17,52 @@ class SignUpControllerImp extends SignUpController{
   late TextEditingController adresse;
   late TextEditingController password;
   bool isShow=true;
+  late var countrySelected=null;
+  late var genderSelected=null;
+  StatusRequest? statusRequest;
+  SignUpData signUpData=SignUpData(Get.find());
+  
 
   showPassword(){
     isShow=!isShow;
     update();
   }
 
+  chooseCountry(var country){
+    countrySelected=country;
+    update();
+  }
+
+  chooseGender(var gender){
+    genderSelected=gender;
+    update();
+  }
+
   @override
-  signUp() {
+  signUp() async{
     
     var state=formstateSignUp.currentState;
     if(state!.validate()){
-      Get.offAllNamed(AppRoutes.home);
+      statusRequest=StatusRequest.loading;
+      update();
+      var response=await signUpData.tryRegister(email.text, username.text, adresse.text, password.text,
+                       countrySelected, genderSelected, "date_birth");
+      if(response is StatusRequest){
+        statusRequest=response;
+      }
+      else{
+        if(response['status']=='succes'){
+          statusRequest=StatusRequest.success;
+          Get.offAllNamed(AppRoutes.login);
+        }
+        else{
+          statusRequest=StatusRequest.failure;
+          Get.snackbar("Warning", response['status']);
+        }
+      }
     }
-    else{
-      
-    }
+    else{}
+    update();
   }
 
   @override

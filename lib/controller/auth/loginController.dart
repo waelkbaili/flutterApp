@@ -1,6 +1,8 @@
+import 'package:firstapp/core/class/statusRequest.dart';
 import 'package:firstapp/core/constant/routes.dart';
 import 'package:firstapp/core/service/authService.dart';
 import 'package:firstapp/core/service/services.dart';
+import 'package:firstapp/data/datasource/remote/auth/loginData.dart';
 import 'package:firstapp/view/screen/auth/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -15,8 +17,12 @@ class LoginControllerImp extends LoginController{
   late TextEditingController email;
   late TextEditingController password;
   bool isShow=true;
-  var isLoading=false.obs;
+
+  //var isLoading=false.obs;
   MyServices myServices=Get.find();
+
+    StatusRequest? statusRequest;
+  LoginData loginData=LoginData(Get.find());
 
   showPassword(){
     isShow=!isShow;
@@ -26,31 +32,25 @@ class LoginControllerImp extends LoginController{
   login() async {
     var state=formstate.currentState;
     if(state!.validate()){
-      isLoading(true);
-      try{
-        var data=await AuthService.login(email: email.text, password: password.text);
-        
-        if(data != null){
-          var verif=data.toString().contains('status');
-          if(!verif){
-            myServices.sharedPreferences.setString("token", data.user.token);
-            formstate.currentState!.save();
-            Get.snackbar("success", "bravo");
-            Get.toNamed(AppRoutes.home);
-          }
-          else{
-             Get.snackbar("echec", data.toString().substring(11,data.toString().length-2));
-          } 
+      statusRequest=StatusRequest.loading;
+      update();
+      var response=await loginData.tryLogin(email.text, password.text);
+      if(response is StatusRequest){
+        statusRequest=response;
+      }
+      else{
+        if(response['status']=='succes'){
+          statusRequest=StatusRequest.success;
+          myServices.sharedPreferences.setString("token", response['data']['token']);
+          Get.snackbar("success", "bravo");
+          Get.toNamed(AppRoutes.home);
         }
         else{
-          Get.snackbar("echec", "something went wrong");
+          statusRequest=StatusRequest.failure;
+          Get.snackbar("Warning", response['status']);
         }
-
       }
-      finally{
-        //Get.snackbar("echec", "erroe");
-        isLoading(false);
-      }
+      update();
     }
     else{
       print("not valid");
