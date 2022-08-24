@@ -15,7 +15,7 @@ class SignUpData{
       "date_birth" : date_birth,
       "gender" : gender,
       
-    });
+    },null);
     return response.fold((l) => l, (r) => r);
   }
 }

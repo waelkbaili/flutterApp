@@ -53,7 +53,7 @@ class SignUpControllerImp extends SignUpController{
       else{
         if(response['status']=='succes'){
           statusRequest=StatusRequest.success;
-          Get.offAllNamed(AppRoutes.login);
+          Get.offNamed(AppRoutes.login);
         }
         else{
           statusRequest=StatusRequest.failure;

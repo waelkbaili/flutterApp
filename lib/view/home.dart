@@ -1,4 +1,7 @@
+import 'package:firstapp/controller/homeController.dart';
+import 'package:firstapp/view/widget/language/button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
 class Home extends StatelessWidget {
@@ -7,11 +10,15 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     Get.put(HomeControllerImp());
     return Scaffold(
       
-      body: Container(
+      body: GetBuilder<HomeControllerImp>(builder: (controllerImp) => 
+      Container(
+        child: Center(child: Button(onPressed:(){controllerImp.logout();} , text: 'Logout',)),
         
       ),
+      ) 
     );
   }
 }

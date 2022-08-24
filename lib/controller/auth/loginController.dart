@@ -43,7 +43,7 @@ class LoginControllerImp extends LoginController{
           statusRequest=StatusRequest.success;
           myServices.sharedPreferences.setString("token", response['data']['token']);
           Get.snackbar("success", "bravo");
-          Get.toNamed(AppRoutes.home);
+          Get.offNamed(AppRoutes.home);
         }
         else{
           statusRequest=StatusRequest.failure;
